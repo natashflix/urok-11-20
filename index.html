@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);color-scheme:light;padding-top:var(--safe-t);padding-bottom:var(--safe-b)}html,body{margin:0}body{font-family:system-ui,sans-serif;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Числа от 11 до 20</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&family=Onest:wght@400;500;600;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* Layout: sticky top-nav + single scroll story; teal "Crimea" accent on warm paper neutrals.
+   Stages as numbered teacher/student cards; appendices as image galleries + readable text. */
+:root{
+  --paper:#fbf8f2;        /* warm paper */
+  --surface:#ffffff;
+  --ink:#1f2a2e;          /* deep teal-ink */
+  --muted:#5d6b6f;
+  --line:#e7e0d4;
+  --teal:#0f8f8a;         /* primary accent */
+  --teal-deep:#0b6b67;
+  --teal-soft:#e3f2f0;
+  --coral:#e4703e;        /* secondary accent (student / highlights) */
+  --coral-soft:#fcece2;
+  --gold:#e8b23a;
+  --shadow:0 1px 2px rgba(31,42,46,.05),0 8px 26px rgba(31,42,46,.07);
+  --radius:18px;
+  --wrap:1060px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#12181a; --surface:#182022; --ink:#edf2f1; --muted:#9fb0b1;
+  --line:#2a3537; --teal:#49c2bb; --teal-deep:#7adbd4; --teal-soft:#16302f;
+  --coral:#f0906a; --coral-soft:#2e211b; --gold:#f0c766;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.4);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#12181a; --surface:#182022; --ink:#edf2f1; --muted:#9fb0b1;
+  --line:#2a3537; --teal:#49c2bb; --teal-deep:#7adbd4; --teal-soft:#16302f;
+  --coral:#f0906a; --coral-soft:#2e211b; --gold:#f0c766;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.4);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;font-size:16px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--surface)}
+h1,h2,h3,h4{font-family:"Nunito",system-ui,sans-serif;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+img{max-width:100%;display:block}
+a{color:var(--teal-deep)}
+
+/* ---------- nav (collapsible) ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--surface);
+  border-bottom:2px solid var(--teal)}
+.nav-in{max-width:var(--wrap);margin:0 auto;
+  padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.nav-bar{display:flex;align-items:center;gap:10px}
+.nav-toggle{flex:1 1 auto;display:inline-flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;
+  font-family:"Nunito";font-weight:800;font-size:16px;color:var(--teal-deep);background:var(--teal-soft);
+  border:1.5px solid var(--teal);border-radius:10px;padding:9px 16px}
+.nav-toggle:hover,.nav-toggle:focus-visible{background:var(--teal);color:#fff;outline:none}
+.nav-toggle .lab{display:inline-flex;align-items:center;gap:8px}
+.nav-toggle .lab::before{content:"☰";font-size:18px}
+.nav-toggle .arr{transition:transform .2s;font-size:13px}
+.nav[data-open="1"] .nav-toggle .arr{transform:rotate(180deg)}
+.nav-links{display:none;flex-wrap:wrap;gap:8px;margin-top:10px}
+.nav[data-open="1"] .nav-links{display:flex}
+.nav-links a{color:var(--teal-deep);text-decoration:none;font-family:"Nunito";font-weight:700;font-size:15px;
+  padding:8px 14px;border-radius:9px;white-space:nowrap;transition:.15s;border:1.5px solid var(--line);background:var(--paper)}
+.nav-links a:hover,.nav-links a:focus-visible{color:#fff;background:var(--teal);border-color:var(--teal);outline:none}
+
+/* ---------- shell ---------- */
+.wrap{max-width:var(--wrap);margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{scroll-margin-top:80px}
+.eyebrow{font-family:"Nunito";font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--teal)}
+.sec-head{display:flex;flex-direction:column;gap:7px;margin-bottom:26px}
+.sec-head h2{font-size:clamp(25px,4.6vw,38px);font-weight:900}
+.sec-head p{color:var(--muted);max-width:62ch}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;background:
+  radial-gradient(120% 90% at 85% -10%,var(--teal-soft) 0%,transparent 55%),var(--surface);
+  border-bottom:1px solid var(--line)}
+.hero-in{max-width:var(--wrap);margin:0 auto;padding-block:clamp(36px,7vw,66px);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.hero .contest{font-family:"Nunito";font-weight:800;color:var(--teal-deep);font-size:clamp(14px,2vw,17px);
+  letter-spacing:.02em;margin:0 0 16px;text-transform:uppercase}
+.hero-author{display:flex;align-items:center;gap:16px;margin-top:24px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:14px 18px;box-shadow:var(--shadow);max-width:560px}
+.hero-author img{flex:none;width:72px;height:72px;border-radius:50%;object-fit:cover;object-position:top center;border:2px solid var(--teal-soft)}
+.hero-author div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.hero-author b{font-family:"Nunito";font-weight:900;font-size:16.5px;color:var(--ink)}
+.hero-author span{font-size:13.5px;color:var(--muted)}
+.hero .kicker{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#fff;font-weight:800;
+  font-family:"Nunito";font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border-radius:999px}
+.hero h1{font-size:clamp(32px,6.3vw,60px);font-weight:900;margin:18px 0 0;letter-spacing:-.5px}
+.hero h1 .hl{color:var(--teal-deep)}
+.hero .sub{font-size:clamp(16px,2.4vw,20px);color:var(--muted);margin-top:16px;max-width:60ch}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--paper);border:1px solid var(--line);
+  border-radius:999px;padding:8px 15px;font-weight:600;font-size:14px}
+.chip b{font-family:"Nunito";font-weight:800;color:var(--teal-deep)}
+.numstrip{margin-top:30px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+
+/* ---------- cards / grid ---------- */
+.block{padding-block:clamp(44px,7vw,70px)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow)}
+.card h3{font-size:18px;font-weight:800;margin-bottom:6px}
+.card .lead{font-size:13px;color:var(--teal);font-family:"Nunito";font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px}
+.card p+p{margin-top:9px}
+.card ul{margin:8px 0 0;padding-left:20px}
+.card li{margin:5px 0}
+
+/* passport definition rows */
+.passport{display:grid;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.prow{display:grid;grid-template-columns:200px 1fr;gap:18px;padding:15px 22px;border-top:1px solid var(--line)}
+.prow:first-child{border-top:none}
+.prow dt{font-family:"Nunito";font-weight:800;color:var(--teal-deep);font-size:14px}
+.prow dd{margin:0;color:var(--ink)}
+.prow dd .q{color:var(--muted);font-size:13.5px}
+.prow a{word-break:break-word}
+
+/* results two-col */
+.results{display:grid;grid-template-columns:1fr 1.25fr;gap:16px}
+.pill{display:inline-block;background:var(--coral-soft);color:var(--coral);font-family:"Nunito";font-weight:800;font-size:12px;
+  padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.pill.t{background:var(--teal-soft);color:var(--teal-deep)}
+
+/* ---------- lesson stages ---------- */
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.stage-top{display:flex;gap:16px;align-items:flex-start;padding:20px 22px;border-bottom:1px solid var(--line);background:linear-gradient(0deg,transparent,var(--teal-soft) 420%)}
+.stage-no{flex:none;width:46px;height:46px;border-radius:13px;background:var(--teal);color:#fff;display:grid;place-items:center;
+  font-family:"Nunito";font-weight:900;font-size:19px;box-shadow:0 6px 16px color-mix(in srgb,var(--teal) 45%,transparent)}
+.stage-no.rest{background:var(--coral);box-shadow:0 6px 16px color-mix(in srgb,var(--coral) 45%,transparent);font-size:22px}
+.stage-ttl h3{font-size:19px;font-weight:900}
+.stage-ttl .task{font-size:13.5px;color:var(--muted);margin-top:4px}
+.stage-ttl .task b{color:var(--coral);font-family:"Nunito"}
+.stage-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.act{padding:18px 22px}
+.act+.act{border-left:1px solid var(--line)}
+.act h4{font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-family:"Nunito";font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.act.teacher h4{color:var(--teal-deep)}
+.act.pupil h4{color:var(--coral)}
+.act .dot{width:9px;height:9px;border-radius:50%}
+.act.teacher .dot{background:var(--teal)}
+.act.pupil .dot{background:var(--coral)}
+.act p{font-size:14.5px;margin:0 0 9px}
+.act p:last-child{margin-bottom:0}
+.act .say{border-left:3px solid var(--teal-soft);padding-left:12px;color:var(--ink)}
+.act .q{color:var(--muted)}
+.stage-imgs{display:flex;flex-wrap:wrap;gap:12px;padding:0 22px 20px}
+.stage-imgs figure{flex:1 1 220px;margin:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper)}
+.stage-imgs figcaption{font-size:12px;color:var(--muted);padding:7px 11px;font-weight:600}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:22px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+
+/* ---------- galleries ---------- */
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.slide{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.slide img{width:100%}
+.slide .cap{padding:12px 16px}
+.slide .cap b{font-family:"Nunito";font-weight:800;font-size:14.5px}
+.slide .cap p{font-size:13px;color:var(--muted);margin-top:3px}
+.ws{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+
+/* ---------- text appendices ---------- */
+.prose{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(22px,4vw,40px)}
+.prose p{margin:0 0 15px;max-width:72ch}
+.prose p:last-child{margin-bottom:0}
+.prose h3{font-size:20px;font-weight:900;margin:26px 0 12px;color:var(--teal-deep)}
+.prose h3:first-child{margin-top:0}
+.prose .quote{font-family:"Nunito";font-style:italic;font-weight:600;font-size:clamp(18px,2.6vw,23px);color:var(--ink);
+  border-left:4px solid var(--teal);padding:4px 0 4px 20px;margin:0 0 10px;max-width:none;line-height:1.35}
+.prose .quote-src{color:var(--muted);font-weight:700;font-family:"Nunito";margin-bottom:22px}
+.trick{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0;background:var(--paper)}
+.trick b{font-family:"Nunito";font-weight:800;color:var(--teal-deep);font-size:15.5px}
+.trick .ex{background:var(--teal-soft);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:14px}
+.trick .ex .u{color:var(--teal-deep);font-weight:700}
+.trick .ex .d{color:var(--coral);font-weight:700}
+.boat-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.boat-list li{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 15px}
+.boat-list .k{flex:none;font-family:"Nunito";font-weight:900;color:var(--coral);font-size:15px;min-width:92px}
+
+/* ---------- author ---------- */
+.author-card{display:flex;gap:26px;align-items:center;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(20px,3vw,32px)}
+.author-card img{flex:none;width:150px;height:190px;object-fit:cover;object-position:top center;border-radius:14px;border:1px solid var(--line)}
+.author-info h3{font-size:clamp(20px,3vw,26px);font-weight:900}
+.author-info .role{color:var(--teal-deep);font-family:"Nunito";font-weight:800;font-size:16px;margin:4px 0 16px}
+.author-dl{display:grid;gap:10px;margin:0}
+.author-dl>div{display:grid;grid-template-columns:120px 1fr;gap:14px}
+.author-dl dt{font-family:"Nunito";font-weight:800;color:var(--muted);font-size:14px}
+.author-dl dd{margin:0;font-size:15.5px}
+.author-dl .sel{user-select:all;font-weight:700;color:var(--teal-deep)}
+
+/* ---------- QR ---------- */
+.qr-sec{background:var(--teal-deep);color:#eafbfa}
+.qr-in{max-width:var(--wrap);margin:0 auto;display:flex;flex-wrap:wrap;gap:30px;align-items:center;justify-content:space-between;
+  padding-block:clamp(36px,6vw,56px);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.qr-txt{max-width:48ch}
+.qr-txt .eyebrow{color:var(--gold)}
+.qr-txt h2{color:#fff;font-size:clamp(24px,4vw,34px);font-weight:900;margin:8px 0 10px}
+.qr-txt p{color:#cdece9}
+.qr-box{background:#fff;border-radius:18px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.3);text-align:center}
+.qr-box #qrcode img,.qr-box #qrcode canvas{display:block;margin:0 auto}
+.qr-box small{display:block;margin-top:10px;color:#0b6b67;font-weight:700;font-family:"Nunito";font-size:12px}
+
+/* ---------- footer ---------- */
+.foot{border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
+.foot-in{max-width:var(--wrap);margin:0 auto;padding-block:26px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* theme toggle */
+.tt{flex:none;border:1.5px solid var(--teal);background:var(--teal-soft);color:var(--teal-deep);border-radius:10px;
+  height:40px;padding:0 16px;cursor:pointer;font-size:15px;font-family:"Nunito";font-weight:800;
+  display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.tt:hover,.tt:focus-visible{background:var(--teal);color:#fff;outline:none}
+
+@media (max-width:760px){
+  .g2,.g3,.results,.gallery,.ws{grid-template-columns:1fr}
+  .stage-body{grid-template-columns:1fr}
+  .act+.act{border-left:none;border-top:1px solid var(--line)}
+  .prow{grid-template-columns:1fr;gap:4px}
+  .author-card{flex-direction:column;align-items:flex-start}
+  .author-dl>div{grid-template-columns:1fr;gap:2px}
+  .hero-author{flex-wrap:wrap}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+</head>
+<body>
+<nav class="nav" id="nav" data-open="0" aria-label="Содержание урока">
+  <div class="nav-in">
+    <div class="nav-bar">
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">
+        <span class="lab">Разделы урока</span><span class="arr">▼</span>
+      </button>
+      <button class="tt" id="tt" title="Переключить тему" aria-label="Переключить светлую и тёмную тему"><span id="tt-ico">🌙</span><span id="tt-txt">Тёмная</span></button>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#passport">Паспорт урока</a>
+      <a href="#results">Результаты</a>
+      <a href="#course">Ход урока</a>
+      <a href="#app1">Презентация</a>
+      <a href="#app2">Дидактика</a>
+      <a href="#app3">Притча</a>
+      <a href="#app4">ТРИЗ</a>
+      <a href="#app5">Базарный</a>
+      <a href="#author">Об авторе</a>
+      <a href="#qr">QR-код</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="hero-in">
+    <p class="contest">XVI&nbsp;Всероссийский конкурс «Мой&nbsp;лучший&nbsp;урок»</p>
+    <span class="kicker">Технологическая карта урока · 1 класс «А»</span>
+    <h1>Числа от 11 до 20.<br><span class="hl">Десятичный принцип</span> записи чисел</h1>
+    <p class="sub">Урок математики «открытия» новых знаний. Раздел «Числа от 11 до 20». Нумерация, образование и чтение чисел второго десятка — в путешествии по Крыму.</p>
+    <div class="hero-author">
+      <img src="img/author.jpg" alt="Кузнецова Светлана Геннадьевна">
+      <div>
+        <b>Кузнецова Светлана Геннадьевна</b>
+        <span>Учитель начальных классов</span>
+        <span>МБОУ ООШ №5, г. Бугуруслан Оренбургской области</span>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <span class="chip"><b>Предмет</b> Математика</span>
+      <span class="chip"><b>Тип</b> Урок «открытия» новых знаний</span>
+      <span class="chip"><b>Учебник</b> М.И. Моро, ч.2, с.46</span>
+      <span class="chip"><b>Технологии</b> ТРИЗ · Базарный · ИКТ</span>
+    </div>
+    <div class="numstrip"><img src="img/numbers.jpg" alt="Числа от 11 до 20" loading="eager"></div>
+  </div>
+</header>
+
+<main>
+<!-- ===== PASSPORT ===== -->
+<section id="passport" class="block"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Приложение · основа урока</span>
+    <h2>Паспорт урока</h2>
+    <p>Полные методические сведения из технологической карты: цель, задачи, связи, оборудование и ресурсы.</p>
+  </div>
+  <dl class="passport">
+    <div class="prow"><dt>Класс</dt><dd>1 «А»</dd></div>
+    <div class="prow"><dt>Раздел программы</dt><dd>Числа от 11 до 20</dd></div>
+    <div class="prow"><dt>Тема урока</dt><dd>Числа от 11 до 20. Десятичный принцип записи чисел. Нумерация</dd></div>
+    <div class="prow"><dt>Тип урока</dt><dd>Урок «открытия» новых знаний</dd></div>
+    <div class="prow"><dt>Цель</dt><dd>Формирование умения читать и записывать числа второго десятка</dd></div>
+    <div class="prow"><dt>Задачи</dt><dd>
+      <p><b>Образовательные:</b> познакомить с образованием чисел второго десятка из одного десятка и нескольких единиц; раскрыть особенность их названий и порядок следования при счёте.</p>
+      <p><b>Развивающие:</b> развивать внимание, логическое мышление.</p>
+      <p><b>Воспитывающие:</b> воспитывать любознательность, интерес к обучению, патриотизм, чувство уважения к прошлому народов России.</p>
+    </dd></div>
+    <div class="prow"><dt>Межпредметные связи</dt><dd>Окружающий мир, литературное чтение, русский язык</dd></div>
+    <div class="prow"><dt>Оборудование</dt><dd>Интерактивная доска; карточки с числами второго десятка; рабочие листы; карточки-пазлы «горы Крыма»; счётный материал раздаточный и индивидуальный; веера с числами</dd></div>
+    <div class="prow"><dt>Технологии</dt><dd>Информационно-коммуникативная, технология ТРИЗ (приложение&nbsp;4), педагогика сотрудничества, игровая; здоровьесберегающий подход — модель подвижного урока по методике Базарного (приложение&nbsp;5)</dd></div>
+    <div class="prow"><dt>Ресурсы учителя</dt><dd>
+      <a href="https://uchi.ru/podgotovka-k-uroku/math/1-klass/" target="_blank" rel="noopener">uchi.ru — подготовка к уроку</a><br>
+      <a href="https://multiurok.ru/files/chisla-ot-11-do-20-desiatichnyi-printsip-zapisi-ch.html" target="_blank" rel="noopener">multiurok.ru — методическая разработка</a><br>
+      <span class="q">Конструктор занятия (урока) — Благотворительный фонд сохранения наследия Д.И. Менделеева</span>
+    </dd></div>
+    <div class="prow"><dt>Ресурсы для учеников</dt><dd>Учебник «Математика» для 1 класса начальной школы — М.И. Моро, С.И. Волкова, С.В. Степанова, часть 2, стр. 46; счётный материал</dd></div>
+  </dl>
+</div></section>
+
+<!-- ===== RESULTS ===== -->
+<section id="results" class="block" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Планируемые результаты</span>
+    <h2>Чему научатся дети</h2>
+    <p>Предметные умения и универсальные учебные действия, формируемые на уроке.</p>
+  </div>
+  <div class="results">
+    <div class="card">
+      <span class="pill">Предметные умения</span>
+      <ul>
+        <li>Образовывать числа второго десятка из одного десятка и нескольких единиц.</li>
+        <li>Сравнивать числа в пределах 20, опираясь на порядок их следования при счёте.</li>
+        <li>Читать и записывать числа второго десятка, объясняя, что обозначает каждая цифра в их записи.</li>
+        <li>Решать задачи.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="pill t">Универсальные учебные действия</span>
+      <p class="lead" style="margin-top:12px">Личностные</p>
+      <p>Выполнять правила подготовки к уроку; учебно-познавательный интерес к новому материалу и способам решения; итоговый и пошаговый контроль по результату; способность к самооценке на основе критериев успешности.</p>
+      <p class="lead" style="margin-top:14px">Познавательные</p>
+      <p>Наблюдать математические объекты в окружающем мире; находить общее и различное; сравнивать объекты и числа; распределять объекты на группы; приводить примеры чисел; соблюдать последовательность при количественном и порядковом счёте; понимать, что явления можно представить текстом, числовой записью, таблицей, рисунком, схемой.</p>
+      <p class="lead" style="margin-top:14px">Коммуникативные</p>
+      <p>Характеризовать число, фигуру, последовательность чисел; комментировать ход сравнения; описывать сюжетную ситуацию и отношение величин; различать и использовать математические знаки; работать в паре, договариваться, считаться с мнением партнёра, мирно разрешать конфликты.</p>
+      <p class="lead" style="margin-top:14px">Регулятивные</p>
+      <p>Принимать учебную задачу и удерживать её; действовать по образцу и инструкции; проверять результат, с помощью учителя находить причину ошибки и трудности.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===== COURSE ===== -->
+<section id="course" class="block"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Ход урока · 8 этапов + физминутка</span>
+    <h2>Ход урока</h2>
+    <p>Для каждого этапа — задача, деятельность учителя и деятельность обучающихся, с опорой на слайды презентации.</p>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--teal)"></i> Деятельность учителя</span>
+    <span><i style="background:var(--coral)"></i> Деятельность обучающихся</span>
+  </div>
+  <div id="stages"></div>
+</div></section>
+
+<!-- ===== APP 1: PRESENTATION ===== -->
+<section id="app1" class="block" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Приложение 1</span>
+    <h2>Презентация к уроку</h2>
+    <p>Слайды, сопровождающие урок: от правил посадки и притчи до образования чисел, задач и рефлексии.</p>
+  </div>
+  <div class="gallery" id="slides"></div>
+</div></section>
+
+<!-- ===== APP 2: DIDACTIC ===== -->
+<section id="app2" class="block"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Приложение 2</span>
+    <h2>Дидактический материал</h2>
+    <p>Рабочие листы и карточки для индивидуальной и парной работы с числами второго десятка.</p>
+  </div>
+  <div class="ws" id="worksheets"></div>
+</div></section>
+
+<!-- ===== APP 3: PARABLE ===== -->
+<section id="app3" class="block" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Приложение 3</span>
+    <h2>Притча «Думай и Делай»</h2>
+    <p>Притча, задающая девиз урока. Звучит на организационном этапе.</p>
+  </div>
+  <div class="prose">
+    <p>Однажды путешественник попросил лодочника перевезти его на другой берег.</p>
+    <p>Сев в лодку, путник заметил, что на вёслах были надписи. На одном весле было написано: «Думай», а на втором: «Делай».</p>
+    <p>«— Какие интересные у тебя вёсла», — сказал путешественник. — А зачем?</p>
+    <p>— Смотри, — улыбаясь, сказал лодочник. И начал грести только одним веслом, с надписью «Думай». Лодка начала кружиться на одном месте.</p>
+    <p>— Иногда случалось, что я думал о чём-то, размышлял, строил планы. Но ничего полезного это не приносило. Я просто кружил на месте, как эта лодка.</p>
+    <p>Лодочник перестал грести одним веслом и начал грести другим, с надписью «Делай». Лодка начала кружить, но уже в другую сторону.</p>
+    <p>— А бывало, я кидался в другую крайность. Делал что-то бездумно, без планов, без чертежей. Много сил и времени тратил. Но в итоге тоже кружился на месте.</p>
+    <p>— Вот и сделал надпись на вёслах, — продолжал лодочник, — чтобы помнить, что на каждый взмах левого весла должен быть взмах правого весла, и только тогда можно будет попасть туда, куда хочешь.</p>
+    <p class="quote" style="margin-top:20px">Как нужно было действовать лодочнику?</p>
+    <p class="quote-src">Девиз урока: «Думай» и «Делай»</p>
+  </div>
+</div></section>
+
+<!-- ===== APP 4: TRIZ ===== -->
+<section id="app4" class="block"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Приложение 4</span>
+    <h2>ТРИЗ-технология в начальной школе</h2>
+    <p>Приёмы теории решения изобретательских задач, применённые на уроке.</p>
+  </div>
+  <div class="prose">
+    <p class="quote">«Вечно изобретать, пробовать, совершенствовать и совершенствоваться — вот единственный курс учительской жизни».</p>
+    <p class="quote-src">К.Д. Ушинский</p>
+    <p>Каждый урок требует от меня чего-то нового, интересного. Важная задача учителя — увлечь детей за собой. В.А. Сухомлинский писал: «Учение не должно сводиться к беспрерывному накоплению знаний, к тренировке памяти… хочется, чтобы дети были путешественниками, открывателями и творцами в этом мире».</p>
+    <p>Развитие творческих способностей учащихся — важнейшая задача современной школы. Чтобы богатый творческий потенциал детей мог реализоваться, нужно создать определённые условия и ввести ребёнка в настоящую творческую деятельность. В этом мне помогает ТРИЗ-технология.</p>
+    <p>ТРИЗ — теория решения изобретательских задач — придумана советским изобретателем и писателем-фантастом Генрихом Сауловичем Альтшуллером. Главная задача методики — научить думать нестандартно и находить собственные решения. Технология соответствует требованиям ФГОС НОО: в основе реализации программы лежит системно-деятельностный подход, который является одним из механизмов реализации данной технологии.</p>
+
+    <h3>Приёмы ТРИЗ, применённые на уроке</h3>
+
+    <div class="trick">
+      <b>Нестандартный вход в урок</b>
+      <p style="margin-top:6px">Включение учащихся в активную мыслительную деятельность с первых минут урока. Учитель начинает урок с противоречивого факта, который трудно объяснить на основе имеющихся знаний.</p>
+      <div class="ex">Свет, светить, светлый, свеча — корень отличается одной буквой. Проблема: корень <b>свет</b>, <b>свеч</b> или <b>све</b>?</div>
+    </div>
+
+    <div class="trick">
+      <b>Фантастическая добавка</b>
+      <p style="margin-top:6px">Привлечение интереса к теме урока через перенос учебной ситуации в необычные условия: на фантастическую планету, с изменённым параметром, с придуманным животным или с привычной ситуацией под новым углом.</p>
+    </div>
+
+    <div class="trick">
+      <b>Я беру тебя с собой</b>
+      <p style="margin-top:6px">Актуализация знаний и накопление информации о признаках объектов. Педагог загадывает признак и называет первый объект; ученики по очереди называют объекты, которые, по их мнению, обладают тем же признаком.</p>
+      <div class="ex">
+        <span class="u">У:</span> Я собираю чемодан и беру с собой морковку. А что у вас?<br>
+        <span class="d">Д:</span> Капусту. — <span class="u">У:</span> Не беру.<br>
+        <span class="d">Д:</span> Апельсин. — <span class="u">У:</span> Не беру.<br>
+        <span class="d">Д:</span> Медузу. — <span class="u">У:</span> Беру.<br>
+        <span class="d">Д:</span> Монету. — <span class="u">У:</span> Беру.<br>
+        <span class="d">Д:</span> Вы берёте предметы, чьё название начинается с буквы «М»?
+      </div>
+    </div>
+
+    <div class="trick">
+      <b>Ложная альтернатива</b>
+      <p style="margin-top:6px">Внимание слушателя уводится в сторону альтернативой «или-или», выраженной произвольно. Ни один из предлагаемых ответов не верен.</p>
+      <div class="ex">Что растёт на берёзе — яблоки или груши?<br>Слово «часы» пишется как «чесы» или «чисы»?<br>Какие звери живут в Африке — мамонты или динозавры?<br>Сколько в минуте секунд — 10 или 100?</div>
+    </div>
+
+    <div class="trick">
+      <b>Лови ошибку</b>
+      <p style="margin-top:6px">Учитель предлагает информацию с неизвестным количеством ошибок. Учащиеся ищут ошибку группой или индивидуально, спорят, совещаются.</p>
+      <div class="ex">Ёж смотался <b>(свернулся)</b> в клубок.<br>Я уже ездил <b>(летал)</b> на самолёте.<br>Мы готовились встречать пернатых <b>(перелётных)</b> птиц.<br>Речка замёрзла <b>(покрылась)</b> льдом.<br>Меня пробудил <b>(разбудил)</b> мой папа.</div>
+    </div>
+
+    <div class="trick">
+      <b>Хорошо — плохо</b>
+      <p style="margin-top:6px">Формирует умение находить положительные и отрицательные стороны любого объекта или ситуации, разрешать противоречия, оценивать с разных позиций. Учитель задаёт объект, учащиеся по очереди называют «плюсы» и «минусы».</p>
+    </div>
+
+    <div class="trick">
+      <b>Да-нетка</b>
+      <p style="margin-top:6px">Метод сужения поиска вопросами, на которые можно отвечать «да — нет». Учитель загадывает слово или предложение, ученик ищет ответ, задавая вопросы, на которые можно ответить только «да», «нет» или «и да, и нет».</p>
+    </div>
+
+    <p>Планомерное использование приёмов ТРИЗ активизирует познавательную деятельность младших школьников и повышает мотивацию к учению. Уроки носят ярко выраженный деятельностный характер: школьники сравнивают, классифицируют объекты, строят логические цепи рассуждений, развивают устную и письменную речь. Систематическое использование интересных приёмов технологии делает педагогический процесс эффективным, формирует нестандартное мышление и приводит к хорошим предметным результатам.</p>
+  </div>
+</div></section>
+
+<!-- ===== APP 5: BAZARNY ===== -->
+<section id="app5" class="block" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Приложение 5</span>
+    <h2>Методика доктора В.Ф. Базарного</h2>
+    <p>Организация учебно-воспитательной работы в начальной школе по здоровьесберегающей методике.</p>
+  </div>
+  <div class="prose">
+    <p class="quote">«Когда нет здоровья, молчит мудрость, не может расцвести искусство, не играют силы, бесполезно богатство и бессилен разум».</p>
+    <p class="quote-src">Геродот</p>
+    <p>Рост числа заболеваний среди школьников за последние годы набирает темпы. Исследования показали, что наряду с экологическими, социальными и наследственными факторами формированию заболеваний способствует большое психоэмоциональное напряжение, связанное с условиями жизни и обучения.</p>
+    <p>В современной школе условия сохранения здоровья чаще всего соблюдаются лишь в отношении «физического благополучия», то есть связываются с внешними условиями по СанПиН и обучением здоровому образу жизни. При этом крайне мало внимания уделяется «состоянию психического и социального благополучия». Рациональная организация учебного процесса необходима для предотвращения перегрузок и сохранения здоровья. Актуальной становится задача школьного образования без потерь здоровья учащихся.</p>
+    <p>Владимир Филиппович Базарный — доктор медицинских наук, профессор. Двадцать лет он изучал влияние школы на здоровье в Московской областной научно-внедренческой лаборатории физиолого-здравоохранительных проблем образования в г. Сергиев Посад. За это время специалистами предложены и защищены патентами 44 уникальные технологии оздоровления детей. На своих уроках я применяю многие из них.</p>
+
+    <h3>Особенности технологии</h3>
+    <p>Вместо традиционной сидячей позы — режим меняющихся поз, когда в течение урока можно работать стоя и сидя. Вместо сухих страниц учебника — обучающее пространство. Вместо близорукого обучения, когда взгляд прикован к столу, — поиск необходимой информации на большом расстоянии.</p>
+    <p class="quote">«Ребёнок нормально растёт, когда он на ногах. Глаза его будут зоркими только в условиях постоянного зрительного поиска на просторе…»</p>
+    <p class="quote-src">В.Ф. Базарный</p>
+
+    <h3>Модель подвижного урока</h3>
+    <p><b>Цель</b> — создание здоровьесберегающих условий обучения через увеличение двигательной активности.</p>
+    <p><b>Задачи:</b> осуществление оптимальной двигательной активности учащихся на уроке; соблюдение режима динамических поз для оптимизации функционального состояния организма и сохранения работоспособности; организация здоровьесберегающей функции урока через физкультминутки и оздоровительные паузы.</p>
+    <p><b>Структура подвижного урока</b> включает четыре здоровьесберегающие технологии: режим динамических поз; физкультминутки; оздоровительные паузы; передвижение по классу.</p>
+  </div>
+</div></section>
+
+<!-- ===== AUTHOR ===== -->
+<section id="author" class="block"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Автор урока</span>
+    <h2>Об авторе</h2>
+  </div>
+  <div class="author-card">
+    <img src="img/author.jpg" alt="Кузнецова Светлана Геннадьевна">
+    <div class="author-info">
+      <h3>Кузнецова Светлана Геннадьевна</h3>
+      <p class="role">Учитель начальных классов</p>
+      <dl class="author-dl">
+        <div><dt>Школа</dt><dd>МБОУ ООШ №5</dd></div>
+        <div><dt>Город</dt><dd>г. Бугуруслан, Оренбургская область</dd></div>
+        <div><dt>E-mail</dt><dd><span class="sel">julia_20012011@mail.ru</span></dd></div>
+        <div><dt>Телефон</dt><dd><span class="sel">8 922 809 04 90</span></dd></div>
+        <div><dt>Конкурс</dt><dd>XVI Всероссийский конкурс «Мой лучший урок»</dd></div>
+      </dl>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===== QR ===== -->
+<section id="qr" class="qr-sec">
+  <div class="qr-in">
+    <div class="qr-txt">
+      <span class="eyebrow">Открыть на телефоне</span>
+      <h2>Наведите камеру на QR-код</h2>
+      <p>Код открывает эту страницу-презентацию на любом устройстве. Удобно показать коллегам или раздать на выступлении — вся технологическая карта и приложения всегда под рукой.</p>
+    </div>
+    <div class="qr-box">
+      <div id="qrcode"></div>
+      <small>Числа от 11 до 20 · 1 класс</small>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><div class="foot-in">
+  Технологическая карта урока математики · 1 класс «А» · Тема «Числа от 11 до 20. Десятичный принцип записи чисел. Нумерация» · Учебник М.И. Моро, ч.2, с.46.
+</div></footer>
+
+<script>
+/* ---------- theme toggle ---------- */
+(function(){
+  var r=document.documentElement;
+  var b=document.getElementById('tt'),ico=document.getElementById('tt-ico'),txt=document.getElementById('tt-txt');
+  var cur;try{cur=localStorage.getItem('theme');}catch(e){}
+  // Светлая тема по умолчанию, пока пользователь сам не переключит
+  var theme=(cur==='dark'||cur==='light')?cur:'light';
+  function apply(t){
+    r.setAttribute('data-theme',t);
+    if(t==='dark'){ico.textContent='☀️';txt.textContent='Светлая тема';}
+    else{ico.textContent='🌙';txt.textContent='Тёмная тема';}
+  }
+  apply(theme);
+  b.addEventListener('click',function(){
+    theme=r.getAttribute('data-theme')==='dark'?'light':'dark';
+    apply(theme);
+    try{localStorage.setItem('theme',theme);}catch(e){}
+  });
+})();
+
+/* ---------- collapsible nav ---------- */
+(function(){
+  var nav=document.getElementById('nav'),btn=document.getElementById('navToggle'),links=document.getElementById('navLinks');
+  function set(open){nav.setAttribute('data-open',open?'1':'0');btn.setAttribute('aria-expanded',open?'true':'false');}
+  btn.addEventListener('click',function(){set(nav.getAttribute('data-open')!=='1');});
+  links.addEventListener('click',function(e){if(e.target.tagName==='A')set(false);});
+})();
+
+/* ---------- lesson stages data ---------- */
+var STAGES=[
+ {no:"I",title:"Организационный момент. Мотивация",
+  task:"создание положительного мотивационного настроя на продуктивную работу",
+  slide:"Слайды 1–2",
+  teacher:["Приветствие. На слайде 1 — правила посадки и необходимые учебные принадлежности (приложение 1).",
+           "Послушайте притчу (приложение 3).",
+           "<span class='say'>Предлагаю взять слова «Думай» и «Делай» девизом нашего урока.</span>"],
+  pupil:["Самоорганизация.","Проверяют готовность к уроку, правильную посадку.","Слушают. Делают выводы."],
+  imgs:[["posture.jpg","«Проверь, как ты сидишь!»"],["parable.jpg","«Два весла — один путь»"]]},
+
+ {no:"II",title:"Актуализация знаний",
+  task:"актуализация субъективного опыта обучающихся",
+  slide:"Слайд 3",
+  teacher:["<b>Приём «Ложная альтернатива» (ТРИЗ).</b> Что растёт на берёзе — яблоки или груши? Кто быстрее летает — котёнок или цыплёнок? Столица России — Париж или Москва? В слове «слон» 3 буквы или 5? У треугольника 4 угла или 6? Весенние месяцы: февраль или декабрь?",
+           "<b>Устный счёт. Работа в группах:</b> составление картинки-пазла. На пазлах — примеры на сложение и вычитание в пределах 10, на листе — ответы; при правильном соединении получаются фото гор Крыма.",
+           "<span class='q'>Что у вас получилось? Что объединяет изображения? Где находятся эти горы? Почему сегодня я взяла именно эти изображения?</span>",
+           "18 марта — День воссоединения Крыма с Россией. Сегодня вы узнаете много интересного об этом регионе России.",
+           "<b>Минутка чистописания.</b> Пальчиковая гимнастика «Замок». Загадка про число: «Круглый ноль такой хорошенький, но не стоит ничегошеньки! Если ж слева, рядом с ним единицу примостим…» — это <b>10</b>."],
+  pupil:["Отвечают на вопросы учителя.","Решают примеры на пазлах и располагают их на листе — получаются иллюстрации гор Крыма.","Выполняют пальчиковую гимнастику, проверяют посадку.","Прописывают число 10.","Называют: десяток; двузначное, чётное."],
+  imgs:[["crimea.jpg","«Крым и Россия: 2014 год»"]]},
+
+ {no:"III",title:"Определение затруднений. Цели и задачи урока",
+  task:"стимулирование познавательного интереса, принятие целей урока",
+  slide:"",
+  teacher:["Пусть каждый повернётся (режим меняющихся поз — методика В.Ф. Базарного, приложение 5) и посмотрит на весь класс: вас больше 10 или меньше? Давайте пересчитаем.",
+           "Как вы думаете, что мы сегодня будем изучать? Тема урока — «Числа от 11 до 20». Чему бы вы хотели научиться?",
+           "Мы узнаем, что обозначает каждая цифра в записи двузначных чисел, научимся образовывать числа второго десятка и сравнивать числа в пределах 20.",
+           "<span class='q'>А как же будут называться числа после 10?</span>"],
+  pupil:["Считают, обнаруживают, что учеников больше 10.","Определяют тему урока.","Ставят учебные задачи.","Числа второго десятка."],
+  imgs:[]},
+
+ {no:"IV",title:"Открытие новых знаний",
+  task:"обеспечение осмысленного усвоения знаний",
+  slide:"Слайды 4–5",
+  teacher:["<b>Игра «Да-нет» (ТРИЗ, приложение 4).</b> Выращивание яблок — одно из основных занятий жителей Крыма.",
+           "<b>Работа со счётным материалом и слайдами.</b> Сколько яблок на картинке? Это 1 десяток, или, как говорили раньше славяне, «дцать».",
+           "Если предметов больше десяти на 1 — «один на -дцать» → <b>одиннадцать</b> (1 десяток и 1 единица). Больше на 2 — «две на -дцать» → <b>двенадцать</b>, и т.д.",
+           "<b>Работа по учебнику (с. 46).</b> Как по-другому называется число десять? Рассмотрите образование чисел второго десятка. Что обозначает первая часть слова? А вторая?",
+           "<b>Мультфрагмент</b> «Занимательная математика» (конструктор занятия фонда наследия Менделеева). Посмотрите, как они записываются. Кто сможет сам записать двузначное число второго десятка?"],
+  pupil:["Отгадывают предмет «яблоко» с помощью наводящих вопросов.","Наблюдают за образованием чисел второго десятка и соотносят их названия.","Рассматривают в учебнике рисунки и названия чисел.","Смотрят фрагмент обучающего мультфильма.","Анализируют запись чисел. Записывают числа."],
+  imgs:[["how1112.jpg","«Как получаются 11 и 12?»"],["numbers.jpg","Числа от 11 до 20"]]},
+
+ {no:"V",title:"Закрепление нового материала",
+  task:"",
+  slide:"",
+  teacher:["<b>Работа с веером чисел.</b> Покажите число, в котором 1 десяток 4 единицы; число, соседи которого 16 и 18; число, в котором 1 десяток 8 единиц…",
+           "<b>Работа в парах со счётным материалом.</b> Смоделируйте числа 11, 17… Смоделируйте число и загадайте его классу. Но, прежде чем сделать, нужно подумать."],
+  pupil:["Показывают заданные числа на веерах.","В парах моделируют числа 11–20 по заданию учителя и самостоятельно, загадывают свои числа классу."],
+  imgs:[]},
+
+ {no:"✦",rest:true,title:"Физминутка по методике В.Ф. Базарного",
+  task:"режим смены динамических поз",
+  slide:"",
+  teacher:["<b>Модель подвижного урока (приложение 5).</b> В течение двух минут, свободно передвигаясь по классу, найдите числа от 10 до 20. Поделитесь находками.",
+           "<b>Физкультминутка:</b> «Раз — подняться, потянуться, два — нагнуться, разогнуться, три — в ладоши три хлопка, на четыре — руки шире, пять — руками помахать, шесть — за парту тихо сесть»."],
+  pupil:["Передвигаются по классу, находят в образовательном пространстве числа от 10 до 20 (часы, классный уголок, термометр, линейки…)."],
+  imgs:[]},
+
+ {no:"VI",title:"Применение полученных знаний",
+  task:"установление правильности и осознанности понимания нового материала, коррекция пробелов",
+  slide:"Слайды 6–8",
+  teacher:["<b>Сравнение чисел.</b> В горах Крыма находят горный хрусталь — красивые блестящие кристаллы. Вы соберёте такие кристаллы, если правильно сравните числа второго десятка.",
+           "<b>Задача 1 (устно).</b> На слайде монеты 10, 5, 2 и 1 рубль. Какими монетами можно рассчитаться за билет в музей стоимостью 16 рублей?",
+           "<b>Задача 2 (письменно).</b> Семья Вани посетила в Крыму 10 интересных мест, а семья Кати — на 5 мест больше. Сколько мест посетила семья Кати? Один ученик решает на переносной доске, остальные — на рабочих листах. Взаимопроверка."],
+  pupil:["Сравнивают числа второго десятка по записям на доске и карточках.","Предлагают варианты решения.","Выстраивают структуру задачи: условие, вопрос, решение, ответ. Анализируют, решают, проверяют по слайду."],
+  imgs:[["crystals.jpg","«Сравни числа» — кристалл за верный ответ"],["coins.jpg","«Собери 16 рублей»"],["traveltask.jpg","«Задача про путешествие»"],["solution.jpg","«Проверяем решение»"]]},
+
+ {no:"VII",title:"Включение новых знаний в систему знаний",
+  task:"усвоение знаний и способов действий на репродуктивном уровне, отработка типичных ошибок",
+  slide:"",
+  teacher:["<b>Игра «Потопаем — похлопаем»</b> (конструктор занятия фонда наследия Менделеева). Называю числа: если это числа второго десятка 11–19 — похлопайте, если другие — потопайте.",
+           "Соедините на карточках числа по порядку от 1 до 20. Что у вас получилось? (приложение 2)",
+           "Индивидуальные карточки с дифференцированными заданиями."],
+  pupil:["Топают или хлопают в соответствии с заданием.","Соединяют числа по порядку — получается яблоня.","Выполняют задания на карточках."],
+  imgs:[["ws_dots.jpg","«Соедини точки от 1 до 20»"],["ws_write.jpg","«Запиши числа»"]]},
+
+ {no:"VIII",title:"Рефлексия учебной деятельности",
+  task:"инициирование рефлексии обучающихся",
+  slide:"",
+  teacher:["Что нового узнали на уроке? Какие числа называются двузначными? Что означало слово «дцать»? Что расскажете родителям о республике Крым?",
+           "Соедините на листках все числа по порядку от 1 до 20. Что у вас получилось? (дерево)",
+           "Подумайте, как вы работали на уроке, и проведите свою лодочку «Думай и делай» по «реке знаний».",
+           "<span class='say'>Если что-то не получилось — не огорчайтесь: вы пришли учиться, и у нас обязательно всё получится.</span>"],
+  pupil:["Отвечают на вопросы, делятся впечатлениями от урока, выполняют самооценку (рефлексию)."],
+  imgs:[["reflection.jpg","«Где ты сейчас?» — самооценка"]]},
+];
+
+function esc(s){return s;}
+var out="";
+STAGES.forEach(function(s){
+  var t=s.teacher.map(function(x){return "<p>"+x+"</p>";}).join("");
+  var p=s.pupil.map(function(x){return "<p>"+x+"</p>";}).join("");
+  var imgs="";
+  if(s.imgs&&s.imgs.length){
+    imgs="<div class='stage-imgs'>"+s.imgs.map(function(im){
+      return "<figure><img loading='lazy' src='img/"+im[0]+"' alt='"+im[1]+"'><figcaption>"+im[1]+"</figcaption></figure>";
+    }).join("")+"</div>";
+  }
+  var task=s.task?"<div class='task'>Задача: "+s.task+(s.slide?" · <b>"+s.slide+"</b>":"")+"</div>":(s.slide?"<div class='task'><b>"+s.slide+"</b></div>":"");
+  out+="<article class='stage'>"
+     +"<div class='stage-top'><div class='stage-no"+(s.rest?" rest":"")+"'>"+s.no+"</div>"
+     +"<div class='stage-ttl'><h3>"+s.title+"</h3>"+task+"</div></div>"
+     +"<div class='stage-body'>"
+     +"<div class='act teacher'><h4><span class='dot'></span>Учитель</h4>"+t+"</div>"
+     +"<div class='act pupil'><h4><span class='dot'></span>Обучающиеся</h4>"+p+"</div>"
+     +"</div>"+imgs+"</article>";
+});
+document.getElementById('stages').innerHTML=out;
+
+/* ---------- gallery (presentation) ---------- */
+var SLIDES=[
+ ["posture.jpg","«Проверь, как ты сидишь!»","Правила посадки — организационный момент"],
+ ["parable.jpg","«Два весла — один путь»","Притча: думать и делать вместе"],
+ ["crimea.jpg","«Крым и Россия: 2014 год»","Карта — межпредметная связь с окружающим миром"],
+ ["how1112.jpg","«Как получаются 11 и 12?»","10 = 1 десяток = «дцать»"],
+ ["numbers.jpg","Числа от 11 до 20","Второй десяток крупным планом"],
+ ["crystals.jpg","«Сравни числа»","Горный хрусталь за верный ответ"],
+ ["coins.jpg","«Собери 16 рублей»","Задача на соотношение монет и цены"],
+ ["traveltask.jpg","«Задача про путешествие»","Семья Вани и семья Кати"],
+ ["solution.jpg","«Проверяем решение»","10 + 5 = 15 мест"],
+ ["reflection.jpg","«Где ты сейчас?»","Рефлексия: трудно / остались вопросы / я справился"],
+];
+document.getElementById('slides').innerHTML=SLIDES.map(function(s){
+  return "<figure class='slide'><img loading='lazy' src='img/"+s[0]+"' alt='"+s[1]+"'><figcaption class='cap'><b>"+s[1]+"</b><p>"+s[2]+"</p></figcaption></figure>";
+}).join("");
+
+/* ---------- worksheets ---------- */
+var WS=[
+ ["ws_dots.jpg","«Соедини точки от 1 до 20»","Получается рисунок — закрепление порядка чисел"],
+ ["ws_write.jpg","«Запиши числа»","Моделирование числа десятками и единицами"],
+ ["ws_neighbors.jpg","«Найди соседей»","Предыдущее и следующее число"],
+ ["ws_compare.jpg","«Сравни числа»","Знаки сравнения в пределах 20"],
+];
+document.getElementById('worksheets').innerHTML=WS.map(function(s){
+  return "<figure class='slide'><img loading='lazy' src='img/"+s[0]+"' alt='"+s[1]+"'><figcaption class='cap'><b>"+s[1]+"</b><p>"+s[2]+"</p></figcaption></figure>";
+}).join("");
+
+/* ---------- QR of current page ---------- */
+(function(){
+  var el=document.getElementById('qrcode');
+  var url=location.href.split('#')[0];
+  try{
+    new QRCode(el,{text:url,width:188,height:188,colorDark:"#0b6b67",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+  }catch(e){
+    el.innerHTML="<p style='color:#0b6b67;font-weight:700;max-width:180px'>Поделитесь ссылкой на эту страницу.</p>";
+  }
+})();
+</script>
+
+</body>
+</html>
